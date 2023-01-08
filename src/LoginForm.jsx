@@ -1,66 +1,67 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-const LoginForm = ({ Eye, EyeSlashed }) => {
-    const [userInfo, setUserInfo] = useState({
+const LoginForm = ({
+    userDetail: { username: detailUsername, password: detailPassword },
+    setIsLoggedIn,
+}) => {
+    console.log(detailUsername, 'user');
+    console.log(detailPassword, 'pass');
+    console.log(setIsLoggedIn, 'func');
+    const [user, setUser] = useState({
         username: '',
         password: '',
     });
 
-    const [type, setType] = useState('password');
-    const [hidden, setHidden] = useState(EyeSlashed);
+    const [error, setError] = useState(false);
 
-    const { username, password } = userInfo;
+    // const { username, password } = user;
 
-    // user handler
-    const handleUser = ({ prevState, target: { value } }) => {
-        setUserInfo({ ...prevState, username: value });
-        console.log(username);
+    const userHandle = ({ target: { value } }) => {
+        setUser({ ...user, username: value });
     };
 
-    // password handler
-    const handlePassword = ({ prevState, target: { value } }) => {
-        setUserInfo({ ...prevState, password: value });
-        console.log(password);
+    const passwordHandle = ({ target: { value } }) => {
+        setUser({ ...user, password: value });
     };
-    const handleSubmit=(e)=>{
+
+    const handleLogin = (e) => {
         e.preventDefault();
-    }
-
-    // validate login
-    // const validateLogin = () => {
-    //     username === username && password === password && alert('welcome!');
-    // };
-
-    // toggle password handle
-    const toggle = () => {
-        //changing state to toggle
-        if (type === 'password') {
-            setHidden(Eye);
-            setType('text');
+        if (
+            user.username === detailUsername &&
+            user.password === detailPassword
+        ) {
+            setIsLoggedIn(true);
+            alert(`Welcome ${user.username}`);
         } else {
-            setHidden(EyeSlashed);
-            setType('password');
+            setError(true);
+            setIsLoggedIn(false);
         }
     };
-
     return (
         <>
             <form>
-                <div>
+                <div className="input-field">
                     <label>Username: </label>
-                    <input type="text" onChange={handleUser} value={username} />
+                    <input
+                        type="text"
+                        value={user.username}
+                        onChange={userHandle}
+                    />
+                    {error && user.username !== detailUsername && (
+                        <p>* No such user</p>
+                    )}
                 </div>
-                <div>
+                <div className="input-field">
                     <label>Password: </label>
                     <input
-                        type={type}
-                        onChange={handlePassword}
-                        value={password}
+                        type="password"
+                        value={user.password}
+                        onChange={passwordHandle}
                     />
-                    <span onClick={toggle}>{hidden}</span>
                 </div>
-                <button onClick={handleSubmit}>Login</button>
+                <button type="button" onClick={() => handleLogin}>
+                    Login
+                </button>
             </form>
         </>
     );

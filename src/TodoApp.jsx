@@ -1,49 +1,63 @@
-import React from 'react'
-import { useState } from 'react';
-const ToDoApp = () => {
-    const [todos, setTodos]=useState([]);
-    const [inputValue, setInputValue]=useState("");
-    const [edit, setEdit]=useState(false);
-    const [editIndex, setEditIndex]=useState("");
-    const handleInputValue=({target:{value}})=>{
-        console.log(inputValue);
-        setInputValue(value);
-    }
-    const handleSubmit=(e)=>{
-        e.preventDefault();
-        setTodos([...todos,inputValue]);
-        setInputValue("");
+import React, { useState } from 'react';
 
-    }
-    const handleEdit=(index)=>{
-        setEditIndex(index);
-        setInputValue(todos[index]);
+const AddNames = () => {
+    const [names, setNames] = useState([]);
+    const [inputValue, setInputValue] = useState('');
+    const [edit, setEdit] = useState(false);
+    const [editIndex, setEditIndex]=useState(-1);
+    const { firstName, lastName } = inputValue;
+
+    const handleFirstName = ({ target: { value } }) => {
+        setInputValue({ ...inputValue, firstName: value });
+    };
+
+    const handLastName = ({ target: { value } }) => {
+        setInputValue({ ...inputValue, lastName: value });
+    };
+
+    const handleSubmit = () => {
+        setNames((prevValue) => [...prevValue,inputValue]);
+        setInputValue({ ...inputValue, firstName: '', lastName: '' });
+    };
+
+    const handleEdit = ({ target: { value } }) => {
         setEdit(true);
-
-
+        setEditIndex(value);
+        setInputValue(names[value]);
+    };
+    const handleDelete=({ target: { value } })=>{
+        setNames((prev)=>{
+            const newNames=[...prev]
+            newNames.splice(value,1)
+            return newNames
+        })
     }
-    const handleDelete=()=>{
 
-    }
-    
+    return (
+        <>
+            <form>
+                <label>FirstName:</label>
+                <input type="text" value={firstName} onChange={handleFirstName}/>
+                <label>LastName:</label>
+                <input type="text" value={lastName} onChange={handLastName}/>
+                <button type="button" onClick={handleSubmit}>
+                    {edit ? 'Update' : 'Add Names'}
+                </button>
+                <ul>
+                    {names.map((names, index) => (
+                        <ul key={index}>
+                            <li>
+                                {names.firstName}
+                                {names.lastName}
+                                <button type="button" onClick={handleEdit}>Edit</button>
+                                <button type="button" onClick={handleDelete}>Delete</button>
+                            </li>
+                        </ul>
+                    ))}
+                </ul>
+            </form>
+        </>
+    );
+};
 
-  return (
-    <div>
-        <h1>To Do App</h1>
-        <input type="text" onChange={handleInputValue} value={inputValue}/>
-        <button onClick={handleSubmit} value="submit">{edit?"Update":"Add Todo"}</button>
-        <ul>
-            {todos.map((item, index)=>{
-                return(
-                <li key={index}>
-                    {item}
-                    <button type="button" onClick={()=> handleEdit(index)}>Edit</button>
-                    <button>Delete</button>
-                </li>
-  );
-})}
-        </ul>
-    </div>
-  )
-}
-export default ToDoApp;
+export default AddNames;

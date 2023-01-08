@@ -1,19 +1,40 @@
-import logo from './logo.svg';
-import './App.css';
 import { useState } from 'react';
-// import LoginForm from "./LoginForm"
+import './App.css';
+// import Dashboard from './Dashboard';
+// import LoginForm from './LoginForm';
 // import RegistrationForm from './RegistrationForm';
-import ToDoApp from './TodoApp';
+import TodoApp from './TodoApp'
 
 function App() {
-  // const [isRegistered, setIsRegistered]=useState(true);
-  return (
-    <div className="App">
-      {/* {!isRegistered?<RegistrationForm/>:<LoginForm/>} */}
-      <ToDoApp/>
-    </div>
-  );
+    // const [userDetail, setUserDetail] = useState({
+    //     username: '',
+    //     password: '',
+    // });
+
+    // const [isRegistered, setIsRegistered] = useState(false);
+    // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    return (
+        <div className="App">
+            {/* {isRegistered ? (
+                isLoggedIn ? (
+                    <Dashboard />
+                ) : (
+                    <LoginForm
+                        userDetail={userDetail}
+                        setIsLoggedIn={setIsLoggedIn}
+                    />
+                )
+            ) : (
+                <RegistrationForm
+                    setIsRegistered={setIsRegistered}
+                    setUserDetail={setUserDetail}
+                    userDetail={userDetail}
+                />
+            )} */}
+            <TodoApp/>
+        </div>
+    );
 }
 
 export default App;
-
